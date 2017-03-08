@@ -1,0 +1,22 @@
+{
+  "name": "postgres-express-react-node",
+  "version": "1.0.0",
+  "description": "Node는 대개 MongoDB + Mongoose 조합과 함께 사용하는 경우가 많지만, RDB의 필요성을 느끼기도 함에 따라. PostgreSQL을 연결해서 사용해 본다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hare85/postgres-express-react-node.git"
+  },
+  "author": "hare",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hare85/postgres-express-react-node/issues"
+  },
+  "homepage": "https://github.com/hare85/postgres-express-react-node#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
