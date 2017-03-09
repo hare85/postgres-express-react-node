@@ -100,7 +100,7 @@
   +});
   ```
 
-# Sequelize 적용
+## Sequelize 적용
 
 [Sequelize.js](http://docs.sequelizejs.com/en/latest/)는 Node.js 기반의 ORM (Object-Releational-Mapping)이다.
 데이터 마이그레이션을 생성하는데도 도움이 된다.
@@ -223,6 +223,11 @@
 - sequelize 마이그레이션
 
   `sequelize db:migrate`
+
+
+## 컨트롤러 및 라우팅
+
+모델을 사용하여 컨트롤러를 만들고 라우트로 파일 모듈링 한다.
 
 
 [Middleware]: http://expressjs.com/ko/guide/using-middleware.html
