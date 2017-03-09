@@ -64,7 +64,41 @@
   `nodemon ./server/main.js`
 
 - TEST
+
   `curl localhost:8000 //=>{"message":"Hello World"}`
+
+# postgres 작성
+
+- 설치
+
+  `npm i -S pg`
+
+- 계정생성
+
+  `createuser -P {username}`
+
+- app.js 수정
+
+  간단하게 client생성 후 접속해서 쿼리를 실행해 본다.
+
+  ```diff
+  const bodyParser = require('body-parser');
+  +const pg = require('pg');
+
+  const app = express();
+  +const conString = 'postgres://hare:qwe123@localhost:5432/hare';
+
+  -app.get('*', (req, res) => res.status(200).send({
+  -  message: 'Hello World',
+  -}));
+  +app.get('*', (req, res) => {
+  +  const client = new pg.Client(conString);
+  +  client.connect();
+  +  const query = client.query('SELECT $1::text as name', ['hare']);
+  +  query.on('row', (row, result) => { result.addRow(row); });
+  +  query.on('end', (result) => { res.send(result.rows); client.end(); });
+  +});
+  ```
 
 [Middleware]: http://expressjs.com/ko/guide/using-middleware.html
 [Third-party-middleware]: http://expressjs.com/en/resources/middleware.html
