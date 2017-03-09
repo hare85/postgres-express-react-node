@@ -1,5 +1,8 @@
 const TodoItem = require('../models').TodoItem;
 
+const catchError = (err, res) => res.status(400).send(err);
+const notFound = res => res.status(404).send({ message: 'TodoItem Not Found' });
+
 module.exports = {
   create(req, res) {
     return TodoItem
@@ -8,7 +11,7 @@ module.exports = {
         todoId: req.params.todoId,
       })
       .then(todoItem => res.status(201).send(todoItem))
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 
   update(req, res) {
@@ -16,7 +19,7 @@ module.exports = {
       .find({ where: { id: req.params.todoItemId, todoId: req.params.todoId } })
       .then((todoItem) => {
         if (!todoItem) {
-          return res.status(404).send({ message: 'TodoItem Not Found' });
+          return notFound(res);
         }
         return todoItem
           // .update({
@@ -25,9 +28,9 @@ module.exports = {
           // })
           .update(req.body, { fields: Object.keys(req.body) })
           .then(updatedTodoItem => res.status(201).send(updatedTodoItem))
-          .catch(error => res.status(400).send(error));
+          .catch(err => catchError(err, res));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 
   destroy(req, res) {
@@ -35,13 +38,13 @@ module.exports = {
       .find({ where: { id: req.params.todoItemId, todoId: req.params.todoId } })
       .then((todoItem) => {
         if (!todoItem) {
-          return res.status(404).send({ message: 'TodoItem Not Found' });
+          return notFound(res);
         }
         return todoItem
           .destroy()
           .then(() => res.status(204).send())
-          .catch(error => res.status(400).send(error));
+          .catch(err => catchError(err, res));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 };

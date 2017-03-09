@@ -1,12 +1,15 @@
 const Todo = require('../models').Todo;
 const TodoItem = require('../models').TodoItem;
 
+const catchError = (err, res) => res.status(400).send(err);
+const notFound = res => res.status(404).send({ message: 'Todo Not Found' });
+
 module.exports = {
   create(req, res) {
     return Todo
       .create({ title: req.body.title })
       .then(todo => res.status(201).send(todo))
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 
   list(req, res) {
@@ -18,7 +21,7 @@ module.exports = {
         }],
       })
       .then(todos => res.status(200).send(todos))
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 
   retrieve(req, res) {
@@ -31,12 +34,12 @@ module.exports = {
       })
       .then((todo) => {
         if (!todo) {
-          return res.status(404).send({ message: 'Todo Not Found' });
+          return notFound(res);
         }
 
         return res.status(200).send(todo);
       })
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 
   update(req, res) {
@@ -48,13 +51,13 @@ module.exports = {
         }],
       })
       .then((todo) => {
-        if (!todo) { return res.status(404).send({ message: 'Todo Not Found' }); }
+        if (!todo) { return notFound(res); }
         return todo
           .update({ title: req.body.title || todo.title })
           .then(() => res.status(200).send(todo))
-          .catch(error => res.status(400).send(error));
+          .catch(err => catchError(err, res));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 
   destroy(req, res) {
@@ -66,12 +69,12 @@ module.exports = {
         }],
       })
       .then((todo) => {
-        if (!todo) { return res.status(404).send({ message: 'Todo Not Found' }); }
+        if (!todo) { return notFound(res); }
         return todo
           .destroy()
           .then(() => res.status(204).send())
-          .catch(error => res.status(400).send(error));
+          .catch(err => catchError(err, res));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(err => catchError(err, res));
   },
 };
